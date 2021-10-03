@@ -2,40 +2,45 @@ pipeline {
     agent any
 
     tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven "mymaven"
-        jdk "myjava"
+        jdk   'myJava'
+        maven 'myMaven'
     }
 
     stages {
-        stage('Compile') {
+        stage('compile') {
             steps {
-                // Get some code from a GitHub repository
-                git 'https://github.com/devops-trainer/addressbook.git'
+                git 'https://github.com/RAMESHBABUT/repopublic.git'
 
-               sh "mvn compile"
+                // Run Maven on a Unix agent.
+                sh "mvn compile"
             }
         }
-        stage('CodeReview') {
+
+        stage('codeReview') {
             steps {
-              sh "mvn pmd:pmd"
+                sh "mvn pmd:pmd"
             }
         }
-        stage('UnitTest') {
+
+        stage('unitTest') {
             steps {
-               sh "mvn test"
+                sh "mvn test"
             }
         }
-        stage('MetricCheck') {
+
+        stage('metricCheck') {
             steps {
-              sh "mvn cobertura:cobertura -Dcobertura.report.format=xml"
+                sh "mvn cobertura:cobertura -Dcobertura.report.format=xml"
             }
-       
         }
-        stage('Package') {
+
+        stage('package') {
             steps {
                 sh "mvn package"
             }
         }
+
+
+
     }
 }
